@@ -3,10 +3,10 @@ import Header from "../components/Header";
 
 // --- START: Local Image Imports (for carousel) ---
 // IMPORTANT: These paths must be correct relative to this file's location.
-import redblood1 from "/src/img/redblood1.png";
-import redblood2 from "/src/img/redblood2.png";
-import redblood3 from "/src/img/redblood3.png";
-import ARinfo from "/src/img/AR.png";
+import redblood1 from "src/img/redblood1.png";
+import redblood2 from "src/img/redblood2.png";
+import redblood3 from "src/img/redblood3.png";
+import ARinfo from "src/img/AR.png";
 // --- END: Local Image Imports ---
 
 // --- START: Fullscreen Image Modal Component (NEW) ---
