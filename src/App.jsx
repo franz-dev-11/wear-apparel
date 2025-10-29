@@ -1,31 +1,43 @@
+// App.jsx
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./features/LandingPage/LandingPage";
 import AWARECollection from "./features/OurProducts/AWARE-Collection";
 import WWPCollection from "./features/OurProducts/WWP-Collection";
+import HIVConnect from "./features/HIV-Connect/HIVCare";
+import VideoSection from "./features/HIV-Connect/VideoSection";
 
-// 🚀 FIXED: Import the Header component from its own file
+// ✨ NEW: Import the About component
+import About from "./features/About/About"; // ⬅️ NEW IMPORT
+
+// NEW: Import the HIVCare component
+import HIVCare from "./features/HIV-Connect/HIVCare";
+
 import Header from "./components/Header";
-// Assuming you created a separate Footer.jsx file
 import Footer from "./components/Footer";
 
 function App() {
   return (
-    // Wrap the entire application with the Header and Footer
     <BrowserRouter>
-      {/* 1. Header is now correctly imported and rendered */}
       <Header />
-      {/* 2. Main content area */}
       <Routes>
-        {/* Route for the Home/Landing Page */}
         <Route path='/' element={<Home />} />
-
-        {/* Route for the AWARE Collection Page (Triggers on /aware-collection) */}
         <Route path='/aware-collection' element={<AWARECollection />} />
-
-        {/* Placeholder for the WWP Collection Page */}
         <Route path='/wwp-collection' element={<WWPCollection />} />
+
+        {/* 💥 NEW ROUTE: For the About page */}
+        <Route path='/about' element={<About />} />
+
+        <Route path='/hiv-connect' element={<HIVConnect />} />
+
+        <Route
+          path='/hiv-connect/awareness-videos'
+          element={<VideoSection />}
+        />
+
+        {/* 🎗️ REVISED: Update the route to use the HIVCare component */}
+        <Route path='/hiv-connect/continuum-of-care' element={<HIVCare />} />
       </Routes>
-      {/* 3. Footer is rendered on all pages */}
       <Footer />
     </BrowserRouter>
   );
