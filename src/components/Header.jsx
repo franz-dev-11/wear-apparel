@@ -138,10 +138,11 @@ const Header = () => {
         </div>
 
         {/* RIGHT SIDE: Cart/Icon Section - REVISION: Added absolute positioning and vertical centering for mobile */}
-        <div className='flex items-center lg:static absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 z-20'>
+        <div className='flex items-center sm:mt-0 md:mt-0 lg:mt-10 lg:static absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 z-20'>
           <div className='relative p-2 cursor-pointer'>
             <ShoppingCart className='w-6 h-6 text-black' />
-            <span className='absolute top-0 right-0 inline-flex items-center justify-center px-1 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full'>
+            {/* REVISION: Changed -translate-y-1/32 to translate-y-1/4 to visually center the counter on the cart icon's top-right corner */}
+            <span className='absolute top-0 right-0 inline-flex items-center justify-center px-1 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 translate-y-1/4 bg-red-600 rounded-full'>
               0
             </span>
           </div>
