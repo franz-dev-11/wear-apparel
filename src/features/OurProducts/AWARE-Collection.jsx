@@ -60,20 +60,23 @@ const ClothesCard = ({
 
   return (
     <div className='bg-white rounded-xl shadow-lg overflow-hidden flex flex-col'>
-      {/* Image and Toggle */}
+      {/* Image and Toggle (UPDATED: Added bg-gray-100) */}
       <div
-        className='relative group cursor-pointer'
-        onClick={() => setIsFrontView(!isFrontView)}
+        className='relative bg-gray-300' // <--- CHANGE IS HERE
       >
         <img
           src={isFrontView ? frontImage : backImage}
           alt={name}
           className='w-full h-80 object-cover transition-opacity duration-500'
         />
-        <div className='absolute inset-0 bg-black bg-opacity-10 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center'>
-          <span className='text-white text-lg font-bold p-2 bg-black bg-opacity-50 rounded-lg'>
-            {isFrontView ? "View Back" : "View Front"}
-          </span>
+        {/* Button positioned in the top right corner */}
+        <div className='absolute top-3 right-3'>
+          <button
+            onClick={() => setIsFrontView(!isFrontView)} // Toggle the view state
+            className='px-3 py-1 text-xs font-bold rounded-full bg-black text-white hover:bg-gray-900 transition duration-150 shadow-lg'
+          >
+            {isFrontView ? "View Back" : "View Front"} {/* Dynamic text */}
+          </button>
         </div>
       </div>
 
