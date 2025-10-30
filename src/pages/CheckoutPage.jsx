@@ -278,9 +278,7 @@ const CheckoutPage = () => {
                       : "bg-red-600 hover:bg-red-700"
                   }`}
                 >
-                  {isProcessing
-                    ? "Processing..."
-                    : `Pay ${formatCurrency(orderTotal)}`}
+                  {isProcessing ? "Processing..." : `Checkout`}
                 </button>
               </div>
             </form>

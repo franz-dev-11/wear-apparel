@@ -41,11 +41,11 @@ const OrderConfirmationPage = () => {
             <li>
               You will receive a shipping confirmation email with tracking
               details as soon as you send us the payment reference number (Gcash
-              or Maya) via text for confirmation. Our contact number is
-              09**********.
+              or Maya) via text for confirmation. Our contact number is +63 9123
+              345 6789.
             </li>
-            <li>Gcash: 09**********</li>
-            <li>Maya: 09**********</li>
+            <li>Gcash: +63 9123 345 6789</li>
+            <li>Maya: +63 9123 345 6789</li>
             <li>For any issues, please contact support.</li>
           </ul>
         </div>
