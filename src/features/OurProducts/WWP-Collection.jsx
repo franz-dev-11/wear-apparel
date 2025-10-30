@@ -136,7 +136,7 @@ const WwpCollectionSection = () => {
       id: 1,
       name: "WWP Hoodie White",
       description:
-        "The WWP Hoodie combines comfort and purpose. Crafted in sleek black, it features a minimalist heart and “Be WWP” print — a subtle reminder to stay informed and spread WWPness in style.",
+        "The WWP Hoodie from the Walk With Pride Collection promotes courage and acceptance. It carries the statement “It’s a Virus, Not a Judgment” — a reminder to walk with pride and compassion.",
       frontImage: showcase1a, // Placeholder image path
       backImage: showcase1b, // Placeholder image path
     },
@@ -144,7 +144,7 @@ const WwpCollectionSection = () => {
       id: 2,
       name: "WWP Shirt White",
       description:
-        "The WWP T-Shirt offers a relaxed fit with its vibrant back design promotes compassion and equality, making it the perfect everyday wear for those who choose to stand against stigma. This shirt has a slightly longer product description than the others to demonstrate the new alignment fix in action.",
+        "The WWP T-Shirt offers a relaxed, breathable fit with the same inspiring design from the Walk With Pride Collection. Empowers wearers to stand up for awareness and equality in everyday style.",
       frontImage: showcase2a, // Placeholder image path
       backImage: showcase2b, // Placeholder image path
     },
@@ -152,7 +152,7 @@ const WwpCollectionSection = () => {
       id: 3,
       name: "WWP Sweater White",
       description:
-        "The WWP Sweater designed with a bold back print that reads “Love is the Vaccine Against the Stigma,” it’s a powerful piece that blends statement and style effortlessly.",
+        "The WWP Sweater, featuring a clean front logo and a powerful back design that reads “Walk With Pride,” this piece blends comfort with advocacy — perfect for making a statement with purpose.",
       frontImage: showcase3a, // Placeholder image path
       backImage: showcase3b, // Placeholder image path
     },
@@ -172,9 +172,11 @@ const WwpCollectionSection = () => {
             THE WWP COLLECTION
           </h2>
           <p className='mt-4 text-lg text-gray-600'>
-            The WWP Collection is designed to promote HIV WWPness and end
-            discrimination. Each design carries a message of compassion and
-            unity, empowering you to wear purpose and spark conversation.
+            World Without Prejudice — The WWP Collection celebrates unity,
+            compassion, and strength in the fight against HIV/AIDS
+            discrimination. Designed to inspire awareness and inclusivity, each
+            piece is more than fashion — it’s a statement of pride, empathy, and
+            hope for a stigma-free world.
           </p>
         </div>
 

@@ -144,7 +144,7 @@ const AwareCollectionSection = () => {
       id: 2,
       name: "AWARE Shirt White",
       description:
-        "The AWARE T-Shirt offers a relaxed fit with its vibrant back design promotes compassion and equality, making it the perfect everyday wear for those who choose to stand against stigma. This shirt has a slightly longer product description than the others to demonstrate the new alignment fix in action.",
+        "The AWARE T-Shirt offers a relaxed fit with its vibrant back design promotes compassion and equality, making it the perfect everyday wear for those who choose to stand against stigma.",
       frontImage: showcase2a, // Placeholder image path
       backImage: showcase2b, // Placeholder image path
     },
@@ -152,7 +152,7 @@ const AwareCollectionSection = () => {
       id: 3,
       name: "AWARE Sweater White",
       description:
-        "The AWARE Sweater designed with a bold back print that reads “Love is the Vaccine Against the Stigma,” it’s a powerful piece that blends statement and style effortlessly.",
+        "The WWP T-Shirt offers a relaxed, breathable fit with the same inspiring design from the Walk With Pride Collection. Empowers wearers to stand up for awareness and equality in everyday style.",
       frontImage: showcase3a, // Placeholder image path
       backImage: showcase3b, // Placeholder image path
     },
@@ -172,9 +172,11 @@ const AwareCollectionSection = () => {
             THE AWARE COLLECTION
           </h2>
           <p className='mt-4 text-lg text-gray-600'>
-            The AWARE Collection is designed to promote HIV awareness and end
-            discrimination. Each design carries a message of compassion and
-            unity, empowering you to wear purpose and spark conversation.
+            Be Aware. Be Informed. Be Compassionate. The AWARE Collection merges
+            purpose with style, spreading the message of HIV awareness and
+            acceptance. Each piece is designed to empower conversations, inspire
+            understanding, and remind us that awareness is the first step toward
+            ending stigma.
           </p>
         </div>
 

@@ -41,20 +41,20 @@ const ImageCarousel = () => {
   const currentImage = images[currentIndex];
 
   return (
-    <div className='h-[450px] w-full relative overflow-hidden'>
+    <div className='h-[250px] md:h-[250px] w-auto mt-20 w-full relative overflow-hidden'>
       <div
         key={currentIndex}
         className='absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out'
         style={{ backgroundImage: `url('${currentImage.url}')`, opacity: 1 }}
       >
-        <div className='absolute inset-0 bg-black opacity-80'></div>
+        <div className='absolute inset-0 bg-black opacity-80 '></div>
 
         <div className='h-full w-full flex flex-col items-center justify-center relative z-10 text-center'>
           <div className='absolute inset-0 bg-black opacity-40 shadow-none flex flex-col items-center justify-center p-4'>
-            <h1 className='text-3xl font-bold text-white mb-2'>
+            <h1 className='text-3xl  font-bold text-white mb-2'>
               {currentImage.title}
             </h1>
-            <p className='text-xl font-medium text-white opacity-90 max-w-xl mx-auto'>
+            <p className='text-m  font-medium text-white opacity-90 max-w-xl mx-auto'>
               {currentImage.subtitle}
             </p>
           </div>

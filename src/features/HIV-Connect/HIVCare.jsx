@@ -16,7 +16,7 @@ const CASCADE_DATA = [
     keyMetric: "Base Population",
     icon: Target,
     color: "text-red-600",
-    bg: "bg-red-50",
+    bg: "bg-gray-50",
     topLabel: null,
     secondaryValue: null,
   },
@@ -29,7 +29,7 @@ const CASCADE_DATA = [
     gapLabel: "PLHIV to be diagnosed",
     icon: User,
     color: "text-orange-600",
-    bg: "bg-orange-50",
+    bg: "bg-gray-50",
     topLabel: "PLHIV who know their HIV status",
     secondaryValue: 240160,
   },
@@ -43,7 +43,7 @@ const CASCADE_DATA = [
       "PLHIV to be enrolled/returned to ART (96,771 enrolled, 35,825 returned)",
     icon: HeartPulse,
     color: "text-yellow-600",
-    bg: "bg-yellow-50",
+    bg: "bg-gray-50",
     topLabel: "PLHIV on ART",
     secondaryValue: 228152,
   },
@@ -56,7 +56,7 @@ const CASCADE_DATA = [
     gapLabel: "PLHIV to be tested for viral load",
     icon: Stethoscope,
     color: "text-blue-600",
-    bg: "bg-blue-50",
+    bg: "bg-gray-50",
     topLabel: "PLHIV on ART who were tested for viral load",
     secondaryValue: 216744,
   },
@@ -261,7 +261,7 @@ const HIVCare = () => {
 
       {/* START: New 95-95-95 Accomplishment Section */}
       <div className='mt-16 max-w-7xl mx-auto'>
-        <h2 className='text-3xl font-bold text-center text-gray-900 mb-8'>
+        <h2 className='text-2xl font-bold text-center text-gray-900 mb-8'>
           95-95-95 ACCOMPLISHMENT, as of June 2025
         </h2>
 
