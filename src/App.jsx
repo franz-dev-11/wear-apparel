@@ -2,6 +2,11 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // NOTE: We don't need to import 'supabase' or handle synchronization state here anymore.
 
+import "leaflet/dist/leaflet.css";
+
+// 2. Leaflet Control Geocoder plugin CSS
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+
 // --- Existing Feature Imports ---
 import Home from "./features/LandingPage/LandingPage";
 import AWARECollection from "./features/OurProducts/AWARE-Collection";

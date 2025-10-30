@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import { v4 as uuidv4 } from "uuid";
-// 🛑 isAuthReady removed
 import { supabase, GUEST_ID_KEY } from "../supabaseClient";
 
 // Utility function for Philippine Peso formatting
@@ -10,13 +9,160 @@ const formatCurrency = (amount) => {
   return amount.toLocaleString("en-PH", { style: "currency", currency: "PHP" });
 };
 
+// 📦 J&T Express Dummy Rate Logic
+// DUMMY STORE LOCATION: QUEZON CITY (METRO MANILA)
+// Rates based on "J&T Express Shipping Rates from Metro Manila" (approx. 2023 rates)
+const JNT_RATES = {
+  // Destination: Metro Manila (from Quezon City)
+  "METRO MANILA": {
+    "0-0.5kg": 85.0,
+    "0.5-1kg": 115.0,
+    "1-3kg": 155.0,
+    "3-4kg": 225.0,
+    "4-5kg": 305.0,
+  },
+  // Destination: Luzon (Provincial)
+  LUZON: {
+    "0-0.5kg": 95.0,
+    "0.5-1kg": 165.0,
+    "1-3kg": 190.0,
+    "3-4kg": 280.0,
+    "4-5kg": 370.0,
+  },
+  // Destination: Visayas
+  VISAYAS: {
+    "0-0.5kg": 100.0,
+    "0.5-1kg": 180.0,
+    "1-3kg": 200.0,
+    "3-4kg": 300.0,
+    "4-5kg": 400.0,
+  },
+  // Destination: Mindanao
+  MINDANAO: {
+    "0-0.5kg": 105.0,
+    "0.5-1kg": 195.0,
+    "1-3kg": 220.0,
+    "3-4kg": 330.0,
+    "4-5kg": 440.0,
+  },
+  // Destination: Island (For remote areas not covered by major Visayas/Mindanao hubs)
+  ISLAND: {
+    "0-0.5kg": 115.0,
+    "0.5-1kg": 205.0,
+    "1-3kg": 230.0,
+    "3-4kg": 340.0,
+    "4-5kg": 450.0,
+  },
+};
+
+// List of all Metro Manila cities/municipalities for robust checking
+const METRO_MANILA_LOCATIONS = [
+  "CALOOCAN",
+  "MALABON",
+  "MANDALUYONG",
+  "MANILA",
+  "MAKATI",
+  "MUNTINLUPA",
+  "NAVOTAS",
+  "PARAÑAQUE",
+  "PASAY",
+  "PASIG",
+  "PATEROS",
+  "QUEZON",
+  "SAN JUAN",
+  "TAGUIG",
+  "VALENZUELA",
+  "MARIKINA",
+  "LAS PIÑAS",
+  "NCR",
+  "METRO MANILA",
+];
+
+// Helper to determine the region from the province/city
+const getRegionFromProvince = (provinceOrCity) => {
+  const upperLocation = provinceOrCity.toUpperCase().trim();
+
+  // Check for Metro Manila locations
+  if (METRO_MANILA_LOCATIONS.some((city) => upperLocation.includes(city))) {
+    return "METRO MANILA";
+  }
+
+  // Simple, non-exhaustive mapping for other regions
+  // Check for common Luzon provinces
+  if (
+    upperLocation.includes("LAGUNA") ||
+    upperLocation.includes("CAVITE") ||
+    upperLocation.includes("BULACAN") ||
+    upperLocation.includes("PAMPANGA") ||
+    upperLocation.includes("BATANGAS") ||
+    upperLocation.includes("TARLAC") ||
+    upperLocation.includes("NUEVA ECIJA") ||
+    upperLocation.includes("PANGASINAN")
+  ) {
+    return "LUZON";
+  }
+  // Check for common Visayas provinces
+  if (
+    upperLocation.includes("CEBU") ||
+    upperLocation.includes("ILOILO") ||
+    upperLocation.includes("BOHOL") ||
+    upperLocation.includes("LEYTE")
+  ) {
+    return "VISAYAS";
+  }
+  // Check for common Mindanao provinces
+  if (
+    upperLocation.includes("DAVAO") ||
+    upperLocation.includes("CAGAYAN DE ORO") ||
+    upperLocation.includes("ZAMBOANGA") ||
+    upperLocation.includes("GENERAL SANTOS")
+  ) {
+    return "MINDANAO";
+  }
+  // Default to a higher-tier Luzon rate for unlisted provinces
+  return "LUZON";
+};
+
+// 💡 DEMO ASSUMPTION: Total package weight for this order
+const DUMMY_PACKAGE_WEIGHT_KG = 1.5;
+
+const calculateShippingFee = (province, totalWeightKg) => {
+  const region = getRegionFromProvince(province);
+  const rates = JNT_RATES[region];
+
+  if (!rates) return 0;
+
+  // Determine the weight bracket
+  let weightBracket;
+  if (totalWeightKg <= 0.5) {
+    weightBracket = "0-0.5kg";
+  } else if (totalWeightKg <= 1.0) {
+    weightBracket = "0.5-1kg";
+  } else if (totalWeightKg <= 3.0) {
+    weightBracket = "1-3kg";
+  } else if (totalWeightKg <= 4.0) {
+    weightBracket = "3-4kg";
+  } else if (totalWeightKg <= 5.0) {
+    weightBracket = "4-5kg";
+  } else {
+    // For packages over 5kg, provide a high default or a max tier
+    return rates["4-5kg"] * 1.5; // Simple scaling for demo
+  }
+
+  const originalFee = rates[weightBracket];
+  // Apply 70% cut (i.e., charge 30% of the original fee)
+  const discountedFee = originalFee * 0.3;
+  return discountedFee;
+};
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { cartItems, cartItemCount, getCartTotal, clearCart } = useCart();
-  const orderTotal = getCartTotal();
+  const cartSubtotal = getCartTotal();
+
+  const [shippingFee, setShippingFee] = useState(0);
+  const orderTotal = cartSubtotal + shippingFee;
 
   const [currentGuestId, setCurrentGuestId] = useState(null);
-  // 🛑 isRLSReady state removed
 
   const [formData, setFormData] = useState({
     email: "",
@@ -28,12 +174,28 @@ const CheckoutPage = () => {
   });
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Use useCallback to memoize the function for useEffect dependency
+  const updateShippingFee = useCallback(() => {
+    // Combine city and province for a more accurate region check
+    const checkLocation = formData.city + " " + formData.province;
+    if (checkLocation.trim()) {
+      const fee = calculateShippingFee(checkLocation, DUMMY_PACKAGE_WEIGHT_KG);
+      setShippingFee(fee);
+    } else {
+      setShippingFee(0);
+    }
+  }, [formData.city, formData.province]);
+
   // 1. Initial Guest ID Setup
   useEffect(() => {
-    // We only retrieve the ID, no waiting for auth required
     const guestId = localStorage.getItem(GUEST_ID_KEY);
     setCurrentGuestId(guestId);
   }, []);
+
+  // 2. Update Shipping Fee whenever the city or province changes
+  useEffect(() => {
+    updateShippingFee();
+  }, [updateShippingFee]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +205,13 @@ const CheckoutPage = () => {
   const handleCheckout = async (e) => {
     e.preventDefault();
 
-    // Only basic checks remain
-    if (!currentGuestId || cartItemCount === 0) {
-      console.warn("Cannot checkout: Missing Guest ID or empty cart.");
-      navigate("/");
+    if (!currentGuestId || cartItemCount === 0 || shippingFee <= 0) {
+      console.warn(
+        "Cannot checkout: Missing Guest ID, empty cart, or missing shipping fee."
+      );
+      if (shippingFee <= 0 && cartItemCount > 0) {
+        alert("Please enter a valid shipping address to calculate the fee.");
+      }
       return;
     }
 
@@ -69,13 +234,13 @@ const CheckoutPage = () => {
         .from("orders")
         .insert([
           {
-            // 🚨 CRITICAL CHANGE: The client MUST send the ID explicitly now
             customer_guest_id: currentGuestId,
             customer_name: formData.fullName,
             product_names_summary: productNameSummary,
             customer_email: formData.email,
             total_amount: orderTotal,
-            payment_status: "Pending", // Placeholder
+            shipping_fee: shippingFee,
+            payment_status: "Pending",
             shipping_address: shippingAddress,
             delivery_status: "Pending",
           },
@@ -115,7 +280,6 @@ const CheckoutPage = () => {
   };
 
   // --- Simplified Conditional Rendering ---
-
   if (cartItemCount === 0 || !currentGuestId) {
     return (
       <div className='min-h-screen pt-24 pb-12 flex flex-col items-center justify-center bg-gray-50'>
@@ -271,15 +435,23 @@ const CheckoutPage = () => {
               <div className='mt-8'>
                 <button
                   type='submit'
-                  disabled={isProcessing || cartItemCount === 0}
+                  disabled={
+                    isProcessing || cartItemCount === 0 || shippingFee <= 0
+                  }
                   className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white transition ${
-                    isProcessing || cartItemCount === 0
+                    isProcessing || cartItemCount === 0 || shippingFee <= 0
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-red-600 hover:bg-red-700"
                   }`}
                 >
                   {isProcessing ? "Processing..." : `Checkout`}
                 </button>
+                {shippingFee <= 0 && (
+                  <p className='mt-2 text-sm text-red-600 text-center'>
+                    Please enter a valid City and Province to calculate shipping
+                    fee.
+                  </p>
+                )}
               </div>
             </form>
           </section>
@@ -315,12 +487,18 @@ const CheckoutPage = () => {
               <div className='flex items-center justify-between'>
                 <dt className='text-sm text-gray-600'>Subtotal</dt>
                 <dd className='text-sm font-medium text-gray-900'>
-                  {formatCurrency(orderTotal)}
+                  {formatCurrency(cartSubtotal)}
                 </dd>
               </div>
               <div className='flex items-center justify-between'>
-                <dt className='text-sm text-gray-600'>Shipping</dt>
-                <dd className='text-sm font-medium text-gray-900'>FREE</dd>
+                <dt className='text-sm text-gray-600'>
+                  Shipping (J&T Express)
+                </dt>
+                <dd className='text-sm font-medium text-gray-900'>
+                  {shippingFee > 0
+                    ? formatCurrency(shippingFee)
+                    : "Enter Address"}
+                </dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='text-lg font-bold text-gray-900'>Total</dt>
