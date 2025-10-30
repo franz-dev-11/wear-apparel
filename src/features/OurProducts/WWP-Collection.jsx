@@ -61,7 +61,7 @@ const ClothesCard = ({
   return (
     <div className='bg-white rounded-xl shadow-lg overflow-hidden flex flex-col'>
       {/* Image and Single Toggle Button (UPDATED: Added bg-gray-100) */}
-      <div className='relative bg-gray-300'>
+      <div className='relative bg-[#818589]'>
         {" "}
         {/* <--- CHANGE IS HERE */}
         <img

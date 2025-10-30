@@ -62,7 +62,7 @@ const ClothesCard = ({
     <div className='bg-white rounded-xl shadow-lg overflow-hidden flex flex-col'>
       {/* Image and Toggle (UPDATED: Added bg-gray-100) */}
       <div
-        className='relative bg-gray-300' // <--- CHANGE IS HERE
+        className='relative bg-[#818589]' // <--- CHANGE IS HERE
       >
         <img
           src={isFrontView ? frontImage : backImage}
