@@ -162,7 +162,7 @@ const CheckoutPage = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
                 {/* Full Name */}
@@ -180,7 +180,7 @@ const CheckoutPage = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
                 {/* Address Line 1 */}
@@ -198,7 +198,7 @@ const CheckoutPage = () => {
                     value={formData.addressLine1}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border  border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
                 {/* City, Province, Zip */}
@@ -217,7 +217,7 @@ const CheckoutPage = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                      className='mt-1 block w-full text-black ring ring-black border  border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
                   <div>
@@ -234,7 +234,7 @@ const CheckoutPage = () => {
                       value={formData.province}
                       onChange={handleInputChange}
                       required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                      className='mt-1 block w-full text-black ring ring-black border  border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
                   <div>
@@ -251,7 +251,7 @@ const CheckoutPage = () => {
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                      className='mt-1 block w-full text-black ring ring-black border  border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
                 </div>
@@ -262,10 +262,7 @@ const CheckoutPage = () => {
                   </h2>
                   <div className='p-4 border-2 border-dashed border-gray-300 rounded-lg text-center'>
                     <p className='text-gray-600'>
-                      [Payment Gateway UI Placeholder - e.g., Stripe Elements]
-                    </p>
-                    <p className='text-xs mt-2'>
-                      * Payment is set to "Paid" for demonstration.
+                      Follow Instructions After Checkout!
                     </p>
                   </div>
                 </div>
