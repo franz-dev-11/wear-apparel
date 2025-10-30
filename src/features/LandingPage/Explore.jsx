@@ -11,9 +11,9 @@ const Explore = () => {
 
   return (
     // ...
-    <div className='flex flex-col items-center space-y-6'>
+    <div className='flex flex-col items-center space-y-6 border border-t-black'>
       {/* Title of the Section */}
-      <h2 className='text-1xl sm:text-3xl font-extrabold text-gray-900 text-center'>
+      <h2 className='text-1xl sm:text-3xl pt-10 font-extrabold text-gray-900 text-center'>
         EXPLORE OUR COLLECTIONS
       </h2>
 

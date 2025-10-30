@@ -24,7 +24,7 @@ const About = () => {
       {/* Main Content Card */}
       <div className='max-w-5xl mx-auto bg-white rounded-2xl overflow-hidden'>
         {/* Hero Header/Title Section */}
-        <div className='p-8 sm:p-12 bg-gray-900 text-white'>
+        <div className='p-8 sm:p-12 bg-black text-white'>
           <p className='text-sm font-semibold uppercase tracking-wider opacity-75 mb-1'>
             Our Story
           </p>

@@ -1,45 +1,60 @@
-// App.jsx
-
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// NOTE: We don't need to import 'supabase' or handle synchronization state here anymore.
+
+// --- Existing Feature Imports ---
 import Home from "./features/LandingPage/LandingPage";
 import AWARECollection from "./features/OurProducts/AWARE-Collection";
 import WWPCollection from "./features/OurProducts/WWP-Collection";
 import HIVConnect from "./features/HIV-Connect/HIVCare";
 import VideoSection from "./features/HIV-Connect/VideoSection";
-
-// ✨ NEW: Import the About component
-import About from "./features/About/About"; // ⬅️ NEW IMPORT
-
-// NEW: Import the HIVCare component
+import About from "./features/About/About";
 import HIVCare from "./features/HIV-Connect/HIVCare";
 
+// --- Component Imports ---
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { CartProvider } from "./components/CartContext";
+
+// --- E-COMMERCE PAGE IMPORTS ---
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/aware-collection' element={<AWARECollection />} />
-        <Route path='/wwp-collection' element={<WWPCollection />} />
+    <CartProvider>
+      <BrowserRouter>
+        <Header />
+        <main className='flex-grow'>
+          <Routes>
+            {/* Existing Routes */}
+            <Route path='/' element={<Home />} />
+            <Route path='/aware-collection' element={<AWARECollection />} />
+            <Route path='/wwp-collection' element={<WWPCollection />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/hiv-connect' element={<HIVConnect />} />
+            <Route
+              path='/hiv-connect/awareness-videos'
+              element={<VideoSection />}
+            />
+            <Route
+              path='/hiv-connect/continuum-of-care'
+              element={<HIVCare />}
+            />
 
-        {/* 💥 NEW ROUTE: For the About page */}
-        <Route path='/about' element={<About />} />
-
-        <Route path='/hiv-connect' element={<HIVConnect />} />
-
-        <Route
-          path='/hiv-connect/awareness-videos'
-          element={<VideoSection />}
-        />
-
-        {/* 🎗️ REVISED: Update the route to use the HIVCare component */}
-        <Route path='/hiv-connect/continuum-of-care' element={<HIVCare />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+            {/* --- E-COMMERCE ROUTES --- */}
+            <Route path='/cart' element={<CartPage />} />
+            <Route path='/checkout' element={<CheckoutPage />} />
+            <Route
+              path='/order-confirmation/:orderId'
+              element={<OrderConfirmationPage />}
+            />
+          </Routes>
+        </main>
+        <Footer />
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

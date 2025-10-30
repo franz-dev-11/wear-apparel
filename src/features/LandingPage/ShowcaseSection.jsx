@@ -9,20 +9,31 @@ import {
   showcase3b,
 } from "./imageImports";
 
+// ✨ NEW: Import useCart hook
+import { useCart } from "../../components/CartContext"; // ⬅️ CONFIRM THIS PATH
+
 const sizes = ["S", "M", "L", "XL", "XXL"];
 
 // Component for a single product card with front/back toggle
 const ClothesCard = ({ name, description, frontImage, backImage }) => {
   const [isFrontView, setIsFrontView] = useState(true);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [isChartModalOpen, setIsChartModalOpen] = useState(false); // State for the Size Chart Modal
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
+
+  // ✨ NEW: Get addToCart function from context
+  const { addToCart } = useCart();
 
   const handleAction = (action) => {
     if (!selectedSize) {
       alert("Please select a size first.");
       return;
     }
-    // Simulate action (In a real app, you'd send a request here)
+
+    // 💥 REVISED: Call the global context function to update the cart count
+    if (action === "Add to Cart") {
+      addToCart(name, selectedSize);
+    }
+
     alert(`${name} (Size: ${selectedSize}) processed for: ${action}!`);
   };
 
@@ -47,7 +58,6 @@ const ClothesCard = ({ name, description, frontImage, backImage }) => {
       {/* Info, Size Selection, and Buttons */}
       <div className='p-6 flex flex-col flex-grow'>
         <h3 className='text-2xl font-bold text-gray-900 mb-2'>{name}</h3>
-        {/* Min-height ensures alignment consistency */}
         <p className='text-gray-600 mb-4 text-sm min-h-[40px] flex-grow'>
           {description}
         </p>
@@ -57,15 +67,13 @@ const ClothesCard = ({ name, description, frontImage, backImage }) => {
           <p className='font-semibold text-gray-800 mb-2'>Select Size:</p>
           <div className='flex flex-wrap gap-2 mb-3'>
             {sizes.map((size) => (
-              // Use a div as a clickable element and manage state manually
               <div
                 key={size}
                 onClick={() => {
-                  // Manual click handler to toggle selection
                   if (selectedSize === size) {
-                    setSelectedSize(null); // Deselect on second click
+                    setSelectedSize(null);
                   } else {
-                    setSelectedSize(size); // Select on first click
+                    setSelectedSize(size);
                   }
                 }}
                 className={`cursor-pointer border-2 rounded-lg px-3 py-1 text-sm font-medium transition-colors select-none ${
@@ -75,7 +83,6 @@ const ClothesCard = ({ name, description, frontImage, backImage }) => {
                 }`}
               >
                 {size}
-                {/* Hidden input for form management */}
                 <input
                   type='radio'
                   name={`${name}-size`}
@@ -130,24 +137,24 @@ const ShowcaseSection = () => {
       name: "AWARE Hoodie White",
       description:
         "The AWARE Hoodie combines comfort and purpose. Crafted in sleek black, it features a minimalist heart and “Be Aware” print — a subtle reminder to stay informed and spread awareness in style.",
-      frontImage: showcase1a, // Placeholder image path
-      backImage: showcase1b, // Placeholder image path
+      frontImage: showcase1a,
+      backImage: showcase1b,
     },
     {
       id: 2,
       name: "AWARE Shirt White",
       description:
         "The AWARE T-Shirt offers a relaxed fit with its vibrant back design promotes compassion and equality, making it the perfect everyday wear for those who choose to stand against stigma. This shirt has a slightly longer product description than the others to demonstrate the new alignment fix in action.",
-      frontImage: showcase2a, // Placeholder image path
-      backImage: showcase2b, // Placeholder image path
+      frontImage: showcase2a,
+      backImage: showcase2b,
     },
     {
       id: 3,
       name: "WWP Sweater Black",
       description:
         "The WWP Sweater, featuring a clean front logo and a powerful back design that reads “Walk With Pride,” this piece blends comfort with advocacy — perfect for making a statement with purpose.",
-      frontImage: showcase3a, // Placeholder image path
-      backImage: showcase3b, // Placeholder image path
+      frontImage: showcase3a,
+      backImage: showcase3b,
     },
   ];
 

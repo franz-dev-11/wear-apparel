@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 // REMOVED: import Footer from "../../components/Footer";
 import ImageCarousel from "./ImageCarousel";
 import ARInfoSection from "./ARInfoSection";
-import ShowcaseSection from "./ShowcaseSection";
 import Explore from "./Explore";
 import { ARinfo } from "./imageImports"; // Import AR image from utility file
 
@@ -22,8 +21,6 @@ const LandingPage = () => {
       <ImageCarousel />
 
       <ARInfoSection arImage={ARinfo} />
-
-      <ShowcaseSection />
 
       <Explore />
 
