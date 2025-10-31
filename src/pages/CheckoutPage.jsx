@@ -9,52 +9,101 @@ const formatCurrency = (amount) => {
   return amount.toLocaleString("en-PH", { style: "currency", currency: "PHP" });
 };
 
-// 📦 J&T Express Dummy Rate Logic (Based on previous context)
+// 📦 J&T Express Discounted Rate Logic (70% OFF Applied)
+// Rates are 30% of the original prices.
 const JNT_RATES = {
   "METRO MANILA": {
-    "0-0.5kg": 85.0,
-    "0.5-1kg": 115.0,
-    "1-3kg": 155.0,
-    "3-4kg": 225.0,
-    "4-5kg": 305.0,
+    "0-0.5kg": 25.5, // 85.0 * 0.3
+    "0.5-1kg": 34.5, // 115.0 * 0.3
+    "1-3kg": 46.5, // 155.0 * 0.3
+    "3-4kg": 67.5, // 225.0 * 0.3
+    "4-5kg": 91.5, // 305.0 * 0.3
   },
   LUZON: {
-    "0-0.5kg": 95.0,
-    "0.5-1kg": 165.0,
-    "1-3kg": 190.0,
-    "3-4kg": 260.0,
-    "4-5kg": 350.0,
+    "0-0.5kg": 28.5, // 95.0 * 0.3
+    "0.5-1kg": 49.5, // 165.0 * 0.3
+    "1-3kg": 57.0, // 190.0 * 0.3
+    "3-4kg": 78.0, // 260.0 * 0.3
+    "4-5kg": 105.0, // 350.0 * 0.3
   },
   "VISAYAS / MINDANAO": {
-    "0-0.5kg": 110.0,
-    "0.5-1kg": 200.0,
-    "1-3kg": 230.0,
-    "3-4kg": 320.0,
-    "4-5kg": 450.0,
+    "0-0.5kg": 33.0, // 110.0 * 0.3
+    "0.5-1kg": 60.0, // 200.0 * 0.3
+    "1-3kg": 69.0, // 230.0 * 0.3
+    "3-4kg": 96.0, // 320.0 * 0.3
+    "4-5kg": 135.0, // 450.0 * 0.3
   },
+};
+
+// =================================================================
+// 🚀 UPDATED: Location to Region Mapping for Shipping Fee Calculation
+// Uses a combined list of common Cities and Provinces (normalized to UPPERCASE).
+// =================================================================
+const LOCATION_TO_REGION_MAP = {
+  // METRO MANILA (NCR)
+  MANILA: "METRO MANILA",
+  "QUEZON CITY": "METRO MANILA",
+  MAKATI: "METRO MANILA",
+  PASIG: "METRO MANILA",
+  CALOOCAN: "METRO MANILA",
+  "LAS PIÑAS": "METRO MANILA",
+  TAGUIG: "METRO MANILA",
+  PASAY: "METRO MANILA",
+  MUNTINLUPA: "METRO MANILA",
+  MANDALUYONG: "METRO MANILA",
+  MARIKINA: "METRO MANILA",
+  NAVOTAS: "METRO MANILA",
+
+  // LUZON Provinces/Cities (Provincial)
+  BATAAN: "LUZON",
+  PAMPANGA: "LUZON",
+  BULACAN: "LUZON",
+  RIZAL: "LUZON",
+  LAGUNA: "LUZON",
+  BATANGAS: "LUZON",
+  CAVITE: "LUZON",
+  PANGASINAN: "LUZON",
+  ANGELES: "LUZON",
+  "SAN FERNANDO": "LUZON",
+  OLONGAPO: "LUZON",
+  BAGUIO: "LUZON",
+  LIPA: "LUZON",
+  NAGA: "LUZON",
+
+  // VISAYAS / MINDANAO
+  "CEBU CITY": "VISAYAS / MINDANAO",
+  "DAVAO CITY": "VISAYAS / MINDANAO",
+  "ZAMBOANGA CITY": "VISAYAS / MINDANAO",
+  BACOLOD: "VISAYAS / MINDANAO",
+  "ILOILO CITY": "VISAYAS / MINDANAO",
+  "CAGAYAN DE ORO": "VISAYAS / MINDANAO",
+  "GENERAL SANTOS": "VISAYAS / MINDANAO",
+  TACLOBAN: "VISAYAS / MINDANAO",
 };
 
 const DUMMY_PRODUCT_WEIGHT_KG = 0.5; // Example weight per product
 
-const getShippingFee = (province, itemWeightKg) => {
-  // Simple dummy logic to categorize region based on common PH provinces
-  let region = "METRO MANILA";
-  const upperLuzon = ["Bataan", "Pampanga", "Bulacan", "Rizal"];
-  const visayasMindanao = ["Cebu", "Davao", "Zamboanga"];
+/**
+ * Calculates the shipping fee based on the destination city/province.
+ * @param {string} location - The city or province entered by the user.
+ * @param {number} totalWeightKg - The total weight of the order in kg.
+ * @returns {number} The discounted shipping fee for the region.
+ */
+const getShippingFee = (location, totalWeightKg) => {
+  if (!location) return 0;
 
-  if (upperLuzon.includes(province)) {
-    region = "LUZON";
-  } else if (visayasMindanao.includes(province)) {
-    region = "VISAYAS / MINDANAO";
-  }
+  // 1. Determine Region based on Location (Case-insensitive)
+  const normalizedLocation = location.toUpperCase().trim();
+  // Default to METRO MANILA if location is not found in the map
+  let region = LOCATION_TO_REGION_MAP[normalizedLocation] || "METRO MANILA";
 
-  // Determine weight tier
+  // 2. Determine weight tier (logic remains the same)
   let weightTier = "0-0.5kg";
-  if (itemWeightKg > 0.5 && itemWeightKg <= 1) weightTier = "0.5-1kg";
-  else if (itemWeightKg > 1 && itemWeightKg <= 3) weightTier = "1-3kg";
-  else if (itemWeightKg > 3 && itemWeightKg <= 4) weightTier = "3-4kg";
-  else if (itemWeightKg > 4 && itemWeightKg <= 5) weightTier = "4-5kg";
-  else if (itemWeightKg > 5) return 450.0; // Max out for very heavy orders
+  if (totalWeightKg > 0.5 && totalWeightKg <= 1) weightTier = "0.5-1kg";
+  else if (totalWeightKg > 1 && totalWeightKg <= 3) weightTier = "1-3kg";
+  else if (totalWeightKg > 3 && totalWeightKg <= 4) weightTier = "3-4kg";
+  else if (totalWeightKg > 4 && totalWeightKg <= 5) weightTier = "4-5kg";
+  else if (totalWeightKg > 5) return 135.0; // Max out (450.0 * 0.3)
 
   return JNT_RATES[region]?.[weightTier] || 0;
 };
@@ -70,17 +119,16 @@ const CheckoutPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
-    // ✨ NEW FIELD ADDED TO STATE
     contactNumber: "",
     addressLine1: "",
-    city: "",
-    province: "",
+    // 💥 UPDATED FIELD: Consolidate city/province for calculation
+    cityOrProvince: "",
     zipCode: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Calculate shipping fee based on current form data
-  const shippingFee = getShippingFee(formData.province, totalWeightKg);
+  // ✨ CRITICAL FIX: Calculate shipping fee based on the new cityOrProvince field
+  const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
   const orderTotal = cartSubtotal + shippingFee;
 
   // 1. Initial Guest ID Setup
@@ -113,8 +161,9 @@ const CheckoutPage = () => {
       const shippingAddress = {
         fullName: formData.fullName,
         addressLine1: formData.addressLine1,
-        city: formData.city,
-        province: formData.province,
+        // Save the combined field into both city and province for database compatibility/completeness
+        city: formData.cityOrProvince,
+        province: formData.cityOrProvince,
         zipCode: formData.zipCode,
       };
 
@@ -127,7 +176,6 @@ const CheckoutPage = () => {
             customer_name: formData.fullName,
             product_names_summary: productNameSummary,
             customer_email: formData.email,
-            // ✨ NEW FIELD: Insert the contact number
             contact_number: formData.contactNumber,
             total_amount: orderTotal,
             payment_status: "Paid", // Placeholder
@@ -214,7 +262,7 @@ const CheckoutPage = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
                 {/* Email */}
@@ -232,10 +280,10 @@ const CheckoutPage = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
-                {/* ✨ NEW INPUT: Contact Number */}
+                {/* Contact Number */}
                 <div>
                   <label
                     htmlFor='contactNumber'
@@ -250,7 +298,7 @@ const CheckoutPage = () => {
                     value={formData.contactNumber}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     placeholder='e.g., 09xxxxxxxxx'
                   />
                 </div>
@@ -269,43 +317,27 @@ const CheckoutPage = () => {
                     value={formData.addressLine1}
                     onChange={handleInputChange}
                     required
-                    className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                    className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
-                {/* City, Province, Zip */}
-                <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+                {/* City/Province, Zip */}
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                  {/* 💥 UPDATED INPUT: Combined City / Province Field */}
                   <div>
                     <label
-                      htmlFor='city'
+                      htmlFor='cityOrProvince'
                       className='block text-sm font-medium text-gray-700'
                     >
-                      City
+                      City / Province (eg. Quezon City)
                     </label>
                     <input
                       type='text'
-                      id='city'
-                      name='city'
-                      value={formData.city}
+                      id='cityOrProvince'
+                      name='cityOrProvince'
+                      value={formData.cityOrProvince}
                       onChange={handleInputChange}
                       required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor='province'
-                      className='block text-sm font-medium text-gray-700'
-                    >
-                      Province
-                    </label>
-                    <input
-                      type='text'
-                      id='province'
-                      name='province'
-                      value={formData.province}
-                      onChange={handleInputChange}
-                      required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                      className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
                   <div>
@@ -322,7 +354,7 @@ const CheckoutPage = () => {
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
-                      className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
+                      className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
                 </div>
@@ -395,11 +427,13 @@ const CheckoutPage = () => {
                 </dd>
               </div>
               <div className='flex items-center justify-between'>
-                <dt className='text-sm text-gray-600'>Shipping</dt>
+                <dt className='text-sm text-gray-600'>
+                  Shipping (70% OFF Applied)
+                </dt>
                 <dd className='text-sm font-medium text-gray-900'>
                   {shippingFee > 0
                     ? formatCurrency(shippingFee)
-                    : "Enter Province"}
+                    : "Enter City / Province"}
                 </dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>

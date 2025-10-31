@@ -194,10 +194,6 @@ const CartPage = () => {
                   {formatCurrency(cartTotal)}
                 </dd>
               </div>
-              <div className='flex items-center justify-between'>
-                <dt className='text-sm text-gray-600'>Shipping</dt>
-                <dd className='text-sm font-medium text-gray-900'>FREE</dd>
-              </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='text-base font-bold text-gray-900'>
                   Order Total
