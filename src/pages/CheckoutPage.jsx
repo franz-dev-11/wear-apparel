@@ -428,7 +428,7 @@ const CheckoutPage = () => {
               </div>
               <div className='flex items-center justify-between'>
                 <dt className='text-sm text-gray-600'>
-                  Shipping (70% OFF Applied)
+                  Shipping (J&T Express)
                 </dt>
                 <dd className='text-sm font-medium text-gray-900'>
                   {shippingFee > 0
