@@ -41,7 +41,7 @@ const ImageCarousel = () => {
   const currentImage = images[currentIndex];
 
   return (
-    <div className='h-[250px] md:h-[250px] w-auto mt-20 w-full relative overflow-hidden'>
+    <div className='h-[250px] md:h-[250px] w-auto mt-15 w-full relative overflow-hidden'>
       <div
         key={currentIndex}
         className='absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out'
