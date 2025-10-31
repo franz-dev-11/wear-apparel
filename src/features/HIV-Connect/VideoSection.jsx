@@ -142,7 +142,7 @@ const VideoSection = () => {
               />
             </div>
             {/* Quick Info Sidebar/List of all videos takes 1/3rd */}
-            <div className='lg:col-span-1 p-8 bg-white rounded-lg shadow-md border-l-4 border-red-500'>
+            <div className='lg:col-span-1 p-8 bg-white rounded-lg shadow-md border-l-4 border-black'>
               <h4 className='text-3x1 font-bold text-gray-800 mb-4'>Details</h4>
               <ul className='space-y-3 text-sm text-gray-700'>
                 <li className='flex items-start'>
