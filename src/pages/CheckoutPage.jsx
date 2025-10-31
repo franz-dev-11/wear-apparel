@@ -180,8 +180,8 @@ const CheckoutPage = () => {
             // Subtotal + Shipping Fee
             total_amount: orderTotal,
             // 🚀 NEW: Shipping Fee recorded separately
-            shipping_fee: shippingFee, 
-            payment_status: "Paid", // Placeholder
+            shipping_fee: shippingFee,
+            payment_status: "Pending", // Placeholder
             delivery_status: "Pending", // Added in previous step
             shipping_address: shippingAddress,
           },
