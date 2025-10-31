@@ -36,8 +36,7 @@ const JNT_RATES = {
 };
 
 // =================================================================
-// 噫 UPDATED: Location to Region Mapping for Shipping Fee Calculation
-// Uses a combined list of common Cities and Provinces (normalized to UPPERCASE).
+// 噫 Location to Region Mapping for Shipping Fee Calculation
 // =================================================================
 const LOCATION_TO_REGION_MAP = {
   // METRO MANILA (NCR)
@@ -85,25 +84,19 @@ const DUMMY_PRODUCT_WEIGHT_KG = 0.5; // Example weight per product
 
 /**
  * Calculates the shipping fee based on the destination city/province.
- * @param {string} location - The city or province entered by the user.
- * @param {number} totalWeightKg - The total weight of the order in kg.
- * @returns {number} The discounted shipping fee for the region.
  */
 const getShippingFee = (location, totalWeightKg) => {
   if (!location) return 0;
 
-  // 1. Determine Region based on Location (Case-insensitive)
   const normalizedLocation = location.toUpperCase().trim();
-  // Default to METRO MANILA if location is not found in the map
   let region = LOCATION_TO_REGION_MAP[normalizedLocation] || "METRO MANILA";
 
-  // 2. Determine weight tier (logic remains the same)
   let weightTier = "0-0.5kg";
   if (totalWeightKg > 0.5 && totalWeightKg <= 1) weightTier = "0.5-1kg";
   else if (totalWeightKg > 1 && totalWeightKg <= 3) weightTier = "1-3kg";
   else if (totalWeightKg > 3 && totalWeightKg <= 4) weightTier = "3-4kg";
   else if (totalWeightKg > 4 && totalWeightKg <= 5) weightTier = "4-5kg";
-  else if (totalWeightKg > 5) return 135.0; // Max out (450.0 * 0.3)
+  else if (totalWeightKg > 5) return 135.0;
 
   return JNT_RATES[region]?.[weightTier] || 0;
 };
@@ -121,19 +114,15 @@ const CheckoutPage = () => {
     fullName: "",
     contactNumber: "",
     addressLine1: "",
-    // 徴 UPDATED FIELD: Consolidate city/province for calculation
     cityOrProvince: "",
     zipCode: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // 笨ｨ CRITICAL FIX: Calculate shipping fee based on the new cityOrProvince field
   const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
   const orderTotal = cartSubtotal + shippingFee;
 
-  // 1. Initial Guest ID Setup
   useEffect(() => {
-    // We only retrieve the ID, no waiting for auth required
     const guestId = localStorage.getItem(GUEST_ID_KEY);
     setCurrentGuestId(guestId);
   }, []);
@@ -161,31 +150,32 @@ const CheckoutPage = () => {
       const shippingAddress = {
         fullName: formData.fullName,
         addressLine1: formData.addressLine1,
-        // Save the combined field into both city and province for database compatibility/completeness
         city: formData.cityOrProvince,
         province: formData.cityOrProvince,
         zipCode: formData.zipCode,
       };
 
+      const orderToInsert = {
+        customer_guest_id: currentGuestId,
+        customer_name: formData.fullName,
+        product_names_summary: productNameSummary,
+        customer_email: formData.email,
+        contact_number: formData.contactNumber,
+        total_amount: orderTotal,
+        // 🚀 CRITICAL: The key must EXACTLY match the database column name.
+        shipping_fee: shippingFee,
+        payment_status: "Paid",
+        delivery_status: "Pending",
+        shipping_address: shippingAddress,
+      };
+
+      // 💥 DEBUGGING STEP: Log the object before insertion
+      console.log("Data sent to Supabase 'orders':", orderToInsert);
+
       // 3. Insert into public.orders
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
-        .insert([
-          {
-            customer_guest_id: currentGuestId,
-            customer_name: formData.fullName,
-            product_names_summary: productNameSummary,
-            customer_email: formData.email,
-            contact_number: formData.contactNumber,
-            // Subtotal + Shipping Fee
-            total_amount: orderTotal,
-            // 🚀 NEW: Shipping Fee recorded separately
-            shipping_fee: shippingFee,
-            payment_status: "Pending", // Placeholder
-            delivery_status: "Pending", // Added in previous step
-            shipping_address: shippingAddress,
-          },
-        ])
+        .insert([orderToInsert])
         .select()
         .single();
 
@@ -213,7 +203,7 @@ const CheckoutPage = () => {
     } catch (error) {
       console.error("Checkout failed:", error);
       alert(
-        `There was an error processing your order: ${error.message}. Please check console.`
+        `There was an error processing your order: ${error.message}. Please check console for the Supabase error details.`
       );
     } finally {
       setIsProcessing(false);
@@ -325,7 +315,7 @@ const CheckoutPage = () => {
                 </div>
                 {/* City/Province, Zip */}
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  {/* 徴 UPDATED INPUT: Combined City / Province Field */}
+                  {/* City / Province Field */}
                   <div>
                     <label
                       htmlFor='cityOrProvince'
