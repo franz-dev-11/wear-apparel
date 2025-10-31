@@ -9,7 +9,7 @@ const formatCurrency = (amount) => {
   return amount.toLocaleString("en-PH", { style: "currency", currency: "PHP" });
 };
 
-// 📦 J&T Express Discounted Rate Logic (70% OFF Applied)
+// 逃 J&T Express Discounted Rate Logic (70% OFF Applied)
 // Rates are 30% of the original prices.
 const JNT_RATES = {
   "METRO MANILA": {
@@ -36,7 +36,7 @@ const JNT_RATES = {
 };
 
 // =================================================================
-// 🚀 UPDATED: Location to Region Mapping for Shipping Fee Calculation
+// 噫 UPDATED: Location to Region Mapping for Shipping Fee Calculation
 // Uses a combined list of common Cities and Provinces (normalized to UPPERCASE).
 // =================================================================
 const LOCATION_TO_REGION_MAP = {
@@ -46,7 +46,7 @@ const LOCATION_TO_REGION_MAP = {
   MAKATI: "METRO MANILA",
   PASIG: "METRO MANILA",
   CALOOCAN: "METRO MANILA",
-  "LAS PIÑAS": "METRO MANILA",
+  "LAS PIﾃ羨S": "METRO MANILA",
   TAGUIG: "METRO MANILA",
   PASAY: "METRO MANILA",
   MUNTINLUPA: "METRO MANILA",
@@ -121,13 +121,13 @@ const CheckoutPage = () => {
     fullName: "",
     contactNumber: "",
     addressLine1: "",
-    // 💥 UPDATED FIELD: Consolidate city/province for calculation
+    // 徴 UPDATED FIELD: Consolidate city/province for calculation
     cityOrProvince: "",
     zipCode: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // ✨ CRITICAL FIX: Calculate shipping fee based on the new cityOrProvince field
+  // 笨ｨ CRITICAL FIX: Calculate shipping fee based on the new cityOrProvince field
   const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
   const orderTotal = cartSubtotal + shippingFee;
 
@@ -177,7 +177,10 @@ const CheckoutPage = () => {
             product_names_summary: productNameSummary,
             customer_email: formData.email,
             contact_number: formData.contactNumber,
+            // Subtotal + Shipping Fee
             total_amount: orderTotal,
+            // 🚀 NEW: Shipping Fee recorded separately
+            shipping_fee: shippingFee, 
             payment_status: "Paid", // Placeholder
             delivery_status: "Pending", // Added in previous step
             shipping_address: shippingAddress,
@@ -322,7 +325,7 @@ const CheckoutPage = () => {
                 </div>
                 {/* City/Province, Zip */}
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  {/* 💥 UPDATED INPUT: Combined City / Province Field */}
+                  {/* 徴 UPDATED INPUT: Combined City / Province Field */}
                   <div>
                     <label
                       htmlFor='cityOrProvince'
