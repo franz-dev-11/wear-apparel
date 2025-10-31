@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ExploreWWP from "./ExploreWWP";
 // Import icons
 import { ShoppingCart, Menu, X, Minus, Plus } from "lucide-react"; // Added Minus, Plus
 // Import assets
@@ -141,7 +142,7 @@ const ClothesCard = ({
         {/* Action Button */}
         <button
           onClick={() => handleAction("Add to Cart")}
-          className='mt-auto flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white text-base font-medium rounded-lg hover:bg-red-700 transition duration-150 shadow-md disabled:bg-gray-400'
+          className='mt-auto flex items-center justify-center space-x-2 px-4 py-2 bg-black text-white text-base font-medium rounded-lg hover:bg-gray-800 transition duration-150 shadow-md disabled:bg-gray-400'
         >
           <ShoppingCart size={20} />
           <span>Add to Cart</span>
@@ -235,6 +236,7 @@ const AWARECollection = () => {
     <div className='min-h-screen flex flex-col'>
       <main className='flex-grow'>
         <AwareCollectionSection />
+        <ExploreWWP />
       </main>
     </div>
   );

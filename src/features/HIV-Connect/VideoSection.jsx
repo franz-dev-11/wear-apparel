@@ -4,8 +4,16 @@ import React from "react";
 /**
  * A reusable component for embedding a single YouTube video using an iframe.
  * Uses Tailwind classes to enforce a 16:9 aspect ratio and add styling.
+ * Now accepts and displays an optional 'description' field.
  */
-const YouTubeEmbed = ({ videoId, title, url, channel, isFeatured = false }) => (
+const YouTubeEmbed = ({
+  videoId,
+  title,
+  url,
+  channel,
+  description, // <-- Added description prop
+  isFeatured = false,
+}) => (
   <div className='flex flex-col h-full'>
     {/* Aspect ratio wrapper (56.25% padding-bottom = 16:9 ratio) */}
     {/* Setting aspect ratio to 16:9 */}
@@ -20,7 +28,7 @@ const YouTubeEmbed = ({ videoId, title, url, channel, isFeatured = false }) => (
         allowFullScreen
       ></iframe>
     </div>
-    {/* Video Metadata for context (This is the standard YouTube style: title and channel below the video) */}
+    {/* Video Metadata for context (This is the standard YouTube style: title, channel, and description below the video) */}
     <div
       className={`mt-4 p-2 ${
         isFeatured ? "text-left" : "text-center md:text-left"
@@ -38,6 +46,10 @@ const YouTubeEmbed = ({ videoId, title, url, channel, isFeatured = false }) => (
         {title}
       </a>
       <p className='text-sm text-gray-500'>{channel}</p>
+      {/* Description display for non-featured videos */}
+      {!isFeatured && description && (
+        <p className='mt-2 text-sm text-gray-600'>{description}</p>
+      )}
     </div>
   </div>
 );
@@ -47,31 +59,39 @@ const YouTubeEmbed = ({ videoId, title, url, channel, isFeatured = false }) => (
  * Component for the HIV Awareness & Prevention Videos section (HIV-Connect).
  */
 const VideoSection = () => {
-  // Video data from the provided URLs - Removed description field
+  // Video data with added description field for all videos
   const videoData = [
     {
       id: "9zJHwHOZEZE",
       title: "Pia Wurtzbach HIV 101",
       channel: "LoveYourselfTV",
       url: "https://www.youtube.com/watch?v=9zJHwHOZEZE",
+      description:
+        "A simple and direct awareness video produced by LoveYourself Inc. featuring Pia Wurtzbach explaining the basics of HIV — what it is, how it’s transmitted, and why knowing one’s status matters. The goal is to demystify the subject and reduce stigma.",
     },
     {
       id: "xey9_igenyw",
       title: "#LightUpPH2020: Red Ribbon",
       channel: "LoveYourselfTV",
       url: "https://www.youtube.com/watch?v=xey9_igenyw",
+      description:
+        "A campaign video tied to the Red Ribbon symbol for HIV / AIDS awareness in the Philippines. It features visuals and messages encouraging solidarity, remembrance, and collective action in the face of HIV.",
     },
     {
       id: "sbXqV1I39Co",
       title: "PrEPPY Camber updated",
       channel: "LoveYourselfTV",
       url: "https://www.youtube.com/watch?v=sbXqV1I39Co",
+      description:
+        "An awareness video promoting Pre-Exposure Prophylaxis (PrEP) as a highly effective tool for preventing HIV. It focuses on accessibility and normalizing the conversation around PrEP.",
     },
     {
       id: "fbHy2OjPgLM",
       title: "Acting on HIV: Questions about Love",
       channel: "LoveYourselfTV",
       url: "https://www.youtube.com/watch?v=fbHy2OjPgLM",
+      description:
+        "A short film or public service announcement discussing relationship dynamics, love, and sexual health in the context of HIV, promoting safe practices and open communication.",
     },
     {
       id: "OWvhVfp9ONc", // Extracted from the long Facebook URL
@@ -79,6 +99,8 @@ const VideoSection = () => {
         "#WorldAIDSDay: We Stand With You by Pia Wurtzbach and Catriona Gray",
       channel: "LoveYourselfTV",
       url: "https://www.youtube.com/watch?v=OWvhVfp9ONc",
+      description:
+        "A campaign video released for World AIDS Day featuring Pia Wurtzbach and Catriona Gray. It emphasizes solidarity with people living with HIV, the message that they are not alone, and reinforces themes of testing, treatment, and the principle “Undetectable = Untransmittable” (U=U).",
     },
   ];
 
@@ -86,14 +108,8 @@ const VideoSection = () => {
   const featuredVideo = videoData[0];
   const remainingVideos = videoData.slice(1);
 
-  // Hardcoded description for the Featured Video (since we removed descriptions from videoData)
-  const featuredDescription = {
-    title:
-      "A simple and direct awareness video produced by LoveYourself Inc. featuring Pia Wurtzbach explaining the basics of HIV — what it is, how it’s transmitted, and why knowing one’s status matters. The goal is to demystify the subject and reduce stigma.",
-    // Kept the original second point content as it seems to be general context
-    secondPoint:
-      "A campaign video tied to the Red Ribbon symbol for HIV / AIDS awareness in the Philippines. It features visuals and messages encouraging solidarity, remembrance, and collective action in the face of HIV.",
-  };
+  // Use the description directly from the featuredVideo object for the sidebar
+  const featuredDescription = featuredVideo.description;
 
   return (
     <section className='pt-30 pb-12 md:pb-16 min-h-screen bg-gray-50'>
@@ -122,19 +138,19 @@ const VideoSection = () => {
                 url={featuredVideo.url}
                 channel={featuredVideo.channel}
                 isFeatured={true}
+                // Description is not passed here as it's displayed in the sidebar
               />
             </div>
             {/* Quick Info Sidebar/List of all videos takes 1/3rd */}
             <div className='lg:col-span-1 p-4 bg-white rounded-lg shadow-md border-l-4 border-red-500'>
-              <h4 className='text-3x1  font-bold text-gray-800 mb-4'>
-                Details
-              </h4>
+              <h4 className='text-3x1 font-bold text-gray-800 mb-4'>Details</h4>
               <ul className='space-y-3 text-sm text-gray-700'>
                 <li className='flex items-start'>
                   <span className='w-4 h-4 text-red-500 mr-2 flex-shrink-0'>
                     &#10003;
                   </span>
-                  <span>{featuredDescription.title}</span>
+                  {/* Using the description from the videoData object */}
+                  <span>{featuredDescription}</span>
                 </li>
               </ul>
             </div>
@@ -155,7 +171,8 @@ const VideoSection = () => {
                 title={video.title}
                 url={video.url}
                 channel={video.channel}
-                // isFeatured is false by default, allowing the title/channel to show underneath
+                description={video.description} // <-- Passing the description here
+                // isFeatured is false by default, allowing the title/channel/description to show underneath
               />
             ))}
           </div>
