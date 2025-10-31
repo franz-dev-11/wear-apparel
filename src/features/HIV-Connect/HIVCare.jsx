@@ -232,11 +232,11 @@ const HIVCare = () => {
 
           {/* START: Goal Status */}
           <p className='text-sm text-gray-600 border-t border-black pt-3 mt-3'>
-            Goal Status: From an estimated
+            Goal Status: From an estimated <span> </span>
             <span className='font-semibold'>
               {CASCADE_DATA[0].value.toLocaleString()}
             </span>{" "}
-            people, only
+            people, only <span> </span>
             <span className='font-semibold'>
               {CASCADE_DATA[CASCADE_DATA.length - 1].value.toLocaleString()}
             </span>{" "}
