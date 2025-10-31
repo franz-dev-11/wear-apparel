@@ -19,12 +19,13 @@ const Explore = () => {
 
       {/* Container for the buttons */}
       <div className='flex justify-center space-x-6 space-y-8'>
-        <Link to='/collections/aware'>
+        <Link to='/aware-collection'>
           <button className='px-4 md:px-16 py-4 text-sm font-semibold rounded-lg shadow-lg transition duration-300 ease-in-out border border-black bg-white text-black hover:bg-black hover:text-white focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50'>
             Aware Collection
           </button>
         </Link>
-        <Link to='/collections/aware'>
+        {/* 🔥 FIX APPLIED HERE: Changed the 'to' prop to '/wwp-collection' */}
+        <Link to='/wwp-collection'>
           <button className='px-4 md:px-16 py-4 text-sm font-semibold rounded-lg shadow-lg transition duration-300 ease-in-out border border-black-100 bg-white text-black hover:bg-black hover:text-white focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50'>
             WWP Collection
           </button>
