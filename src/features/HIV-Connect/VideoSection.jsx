@@ -142,13 +142,10 @@ const VideoSection = () => {
               />
             </div>
             {/* Quick Info Sidebar/List of all videos takes 1/3rd */}
-            <div className='lg:col-span-1 p-4 bg-white rounded-lg shadow-md border-l-4 border-red-500'>
+            <div className='lg:col-span-1 p-8 bg-white rounded-lg shadow-md border-l-4 border-red-500'>
               <h4 className='text-3x1 font-bold text-gray-800 mb-4'>Details</h4>
               <ul className='space-y-3 text-sm text-gray-700'>
                 <li className='flex items-start'>
-                  <span className='w-4 h-4 text-red-500 mr-2 flex-shrink-0'>
-                    &#10003;
-                  </span>
                   {/* Using the description from the videoData object */}
                   <span>{featuredDescription}</span>
                 </li>

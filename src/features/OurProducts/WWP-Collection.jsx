@@ -197,7 +197,7 @@ const WwpCollectionSection = () => {
           <h2 className='pt-10 text-3xl font-extrabold text-gray-900 uppercase tracking-wider'>
             THE WALK WITH PRIDE (WWP) COLLECTION
           </h2>
-          <p className='mt-4 text-sm  text-gray-600'>
+          <p className='mt-4 text-sm lg:px-54 text-gray-600'>
             The WWP Collection embodies resilience and strength in the fight
             against HIV/AIDS discrimination. Designed to inspire awareness and
             inclusivity, each piece is more than fashion — it’s a statement of

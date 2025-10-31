@@ -197,7 +197,7 @@ const AwareCollectionSection = () => {
           <h2 className='pt-10 text-3xl font-extrabold text-gray-900 uppercase tracking-wider'>
             THE AWARE COLLECTION
           </h2>
-          <p className='mt-4 text-sm  text-gray-600'>
+          <p className='mt-4 text-sm lg:px-54 text-gray-600'>
             The AWARE Collection is our commitment to visibility and acceptance,
             spreading the message of HIV awareness and acceptance. Each piece is
             designed to empower conversations, inspire understanding, and remind
