@@ -5,6 +5,39 @@ import { Trash2 } from "lucide-react";
 // Import useCart hook (Path assumes components is at ../components/CartContext)
 import { useCart } from "../components/CartContext";
 
+// --- START: Product Image Imports (from imageImports-AWARE & imageImports-WWP) ---
+
+// AWARE Collection (Corresponds to showcase1a, showcase2a, showcase3a)
+import awareHoodieFront from "/src/img/AWARE-WHITE-COLLECTION/white-hoodie-front.png";
+import awareShirtFront from "/src/img/AWARE-WHITE-COLLECTION/white-shirt-front.png";
+import awareSweaterFront from "/src/img/AWARE-WHITE-COLLECTION/white-sweater-front.png";
+
+// WWP Collection (Corresponds to showcase4a-6a, i.e., the front views)
+import wwpHoodieFront from "/src/img/WWP-BLACK-COLLECTION/wwp-hoodie-front.png";
+import wwpShirtFront from "/src/img/WWP-BLACK-COLLECTION/wwp-shirt-front.png";
+import wwpSweaterFront from "/src/img/WWP-BLACK-COLLECTION/wwp-sweater-front.png";
+
+// --- END: Product Image Imports ---
+
+// --- START: Image Mapping Logic ---
+// Map product names to their imported image source
+const PRODUCT_IMAGES = {
+  // AWARE Collection - Use product names that match your cart item's 'name' property
+  "AWARE Hoodie White": awareHoodieFront,
+  "AWARE Shirt White": awareShirtFront,
+  "AWARE Sweater White": awareSweaterFront,
+  // WWP Collection - Use product names that match your cart item's 'name' property
+  "WWP Hoodie Black": wwpHoodieFront,
+  "WWP Shirt Black": wwpShirtFront,
+  "WWP Sweater Black": wwpSweaterFront,
+};
+
+// Function to get image source. Returns null if no match is found, allowing a default placeholder to render.
+const getProductImage = (itemName) => {
+  return PRODUCT_IMAGES[itemName] || null;
+};
+// --- END: Image Mapping Logic ---
+
 // Utility function for Philippine Peso formatting
 const formatCurrency = (amount) => {
   return amount.toLocaleString("en-PH", { style: "currency", currency: "PHP" });
@@ -56,73 +89,86 @@ const CartPage = () => {
             className='lg:col-span-8 bg-white p-6 rounded-lg shadow-md'
           >
             <ul role='list' className='divide-y divide-gray-200'>
-              {cartItems.map((item) => (
-                <li key={item.id} className='flex py-6'>
-                  <div className='flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden'>
-                    {/* Placeholder for Product Image (replace with actual image later) */}
-                    <div className='w-full h-full bg-gray-300 flex items-center justify-center text-xs text-gray-700'>
-                      [Image Placeholder]
-                    </div>
-                  </div>
+              {cartItems.map((item) => {
+                // Get the product image source based on the item name
+                const itemImageSrc = getProductImage(item.name);
 
-                  <div className='ml-4 flex-1 flex flex-col'>
-                    <div>
-                      {/* Item Name and Total Price */}
-                      <div className='flex justify-between text-base font-medium text-gray-900'>
-                        <h3>{item.name}</h3>
-                        <p className='ml-4'>
-                          {formatCurrency(item.price * item.quantity)}
+                return (
+                  <li key={item.id} className='flex py-6'>
+                    <div className='flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden'>
+                      {/* Dynamic Product Image. Renders a generic div if no image source is found. */}
+                      {itemImageSrc ? (
+                        <img
+                          src={itemImageSrc}
+                          alt={item.name}
+                          className='w-full h-full object-cover object-center'
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-gray-300 flex items-center justify-center text-xs text-gray-700 text-center p-1'>
+                          Image Not Found
+                        </div>
+                      )}
+                    </div>
+
+                    <div className='ml-4 flex-1 flex flex-col'>
+                      <div>
+                        {/* Item Name and Total Price */}
+                        <div className='flex justify-between text-base font-medium text-gray-900'>
+                          <h3>{item.name}</h3>
+                          <p className='ml-4'>
+                            {formatCurrency(item.price * item.quantity)}
+                          </p>
+                        </div>
+                        <p className='mt-1 text-sm text-gray-500'>
+                          Size: {item.size}
+                        </p>
+                        {/* Unit Price */}
+                        <p className='text-sm font-medium text-red-600'>
+                          Unit Price: {formatCurrency(item.price)}
                         </p>
                       </div>
-                      <p className='mt-1 text-sm text-gray-500'>
-                        Size: {item.size}
-                      </p>
-                      {/* Unit Price */}
-                      <p className='text-sm font-medium text-red-600'>
-                        Unit Price: {formatCurrency(item.price)}
-                      </p>
-                    </div>
 
-                    <div className='flex-1 flex items-end justify-between text-sm mt-3'>
-                      <div className='flex items-center space-x-2'>
-                        <label
-                          htmlFor={`quantity-${item.id}`}
-                          className='text-gray-500'
-                        >
-                          Qty
-                        </label>
-                        {/* Quantity Input with Update Function */}
-                        <input
-                          id={`quantity-${item.id}`}
-                          type='number'
-                          value={item.quantity}
-                          min='1'
-                          // Update quantity when input changes
-                          onChange={(e) =>
-                            updateItemQuantity(
-                              item.id,
-                              parseInt(e.target.value, 10) || 1
-                            )
-                          }
-                          className='w-16 border border-gray-300 rounded-md shadow-sm py-1.5 text-base font-medium text-gray-700 text-center focus:outline-none focus:ring-red-500 focus:border-red-500'
-                        />
-                      </div>
+                      <div className='flex-1 flex items-end justify-between text-sm mt-3'>
+                        <div className='flex items-center space-x-2'>
+                          <label
+                            htmlFor={`quantity-${item.id}`}
+                            className='text-gray-500'
+                          >
+                            Qty
+                          </label>
+                          {/* Quantity Input with Update Function */}
+                          <input
+                            id={`quantity-${item.id}`}
+                            type='number'
+                            value={item.quantity}
+                            min='1'
+                            // Update quantity when input changes
+                            onChange={(e) =>
+                              updateItemQuantity(
+                                item.id,
+                                parseInt(e.target.value, 10) || 1
+                              )
+                            }
+                            className='w-16 border border-gray-300 rounded-md shadow-sm py-1.5 text-base font-medium text-gray-700 text-center focus:outline-none focus:ring-red-500 focus:border-red-500'
+                          />
+                        </div>
 
-                      <div className='flex'>
-                        {/* Remove Button */}
-                        <button
-                          type='button'
-                          onClick={() => removeFromCart(item.id)}
-                          className='font-medium text-red-600 hover:text-red-500 flex items-center space-x-1'
-                        >
-                          <Trash2 className='h-4 w-4' />
-                          <span>Remove</span>
-                        </button>
+                        <div className='flex'>
+                          {/* Remove Button */}
+                          <button
+                            type='button'
+                            onClick={() => removeFromCart(item.id)}
+                            className='font-medium text-red-600 hover:text-red-500 flex items-center space-x-1'
+                          >
+                            <Trash2 className='h-4 w-4' />
+                            <span>Remove</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </section>
 

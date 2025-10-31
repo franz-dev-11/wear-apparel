@@ -85,7 +85,7 @@ const ClothesCard = ({
       <div className='p-5 flex flex-col flex-grow'>
         <h3 className='text-xl font-bold text-gray-900 mb-1'>{name}</h3>
         <p className='text-sm text-gray-600 mb-3'>{description}</p>
-        <p className='text-2xl font-extrabold text-red-600 mb-4'>
+        <p className='text-2xl font-medium text-black mb-4'>
           ₱{price.toLocaleString()}
         </p>
 

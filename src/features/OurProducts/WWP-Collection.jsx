@@ -7,12 +7,12 @@ import Logo from "/src/img/LOGO.jpg";
 // Import Size Chart Modal and Images
 import SizeChartModal from "../LandingPage/SizeChartModal";
 import {
-  showcase1a,
-  showcase1b,
-  showcase2a,
-  showcase2b,
-  showcase3a,
-  showcase3b,
+  showcase4a,
+  showcase4b,
+  showcase5a,
+  showcase5b,
+  showcase6a,
+  showcase6b,
 } from "./imageImports-WWP";
 
 // ✨ NEW: Import useCart hook
@@ -85,7 +85,7 @@ const ClothesCard = ({
       <div className='p-5 flex flex-col flex-grow'>
         <h3 className='text-xl font-bold text-gray-900 mb-1'>{name}</h3>
         <p className='text-sm text-gray-600 mb-3'>{description}</p>
-        <p className='text-2xl font-extrabold text-red-600 mb-4'>
+        <p className='text-2xl font-medium text-black mb-4'>
           ₱{price.toLocaleString()}
         </p>
 
@@ -165,8 +165,8 @@ const wwpClothesData = [
     description:
       "The WWP Hoodie from the Walk With Pride Collection promotes courage and acceptance. It carries the statement “It’s a Virus, Not a Judgment” — a reminder to walk with pride and compassion.",
     price: 1600,
-    frontImage: showcase1a,
-    backImage: showcase1b,
+    frontImage: showcase4a,
+    backImage: showcase4b,
   },
   {
     id: "5f4e3d2c-1b0a-4987-6543-210fedcba987", // WWP Shirt Black UUID
@@ -174,8 +174,8 @@ const wwpClothesData = [
     description:
       "The WWP T-Shirt offers a relaxed, breathable fit with the same inspiring design from the Walk With Pride Collection. Empowers wearers to stand up for awareness and equality in everyday style.",
     price: 700,
-    frontImage: showcase2a,
-    backImage: showcase2b,
+    frontImage: showcase5a,
+    backImage: showcase5b,
   },
   {
     id: "1c2d3e4f-5a6b-4789-9012-34567890efab", // WWP Sweater Black UUID
@@ -183,8 +183,8 @@ const wwpClothesData = [
     description:
       "The WWP Sweater, featuring a clean front logo and a powerful back design that reads “Walk With Pride,” this piece blends comfort with advocacy — perfect for making a statement with purpose.",
     price: 1400,
-    frontImage: showcase3a,
-    backImage: showcase3b,
+    frontImage: showcase6a,
+    backImage: showcase6b,
   },
 ];
 

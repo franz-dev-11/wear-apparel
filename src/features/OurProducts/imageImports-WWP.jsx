@@ -9,12 +9,12 @@ import sizechart from "/src/img/SIZE CHARTS/HOODIE (SIZE CHART).png";
 import sizechart1 from "/src/img/SIZE CHARTS/SHIRT (SIZE CHART).png";
 import sizechart2 from "/src/img/SIZE CHARTS/SWEATER (SIZE CHART).png";
 // -------------------------------------------------------------
-import showcase1a from "/src/img/WWP-BLACK-COLLECTION/wwp-hoodie-front.png";
-import showcase1b from "/src/img/WWP-BLACK-COLLECTION/wwp-hoodie-back.png";
-import showcase2a from "/src/img/WWP-BLACK-COLLECTION/wwp-shirt-front.png";
-import showcase2b from "/src/img/WWP-BLACK-COLLECTION/wwp-shirt-back.png";
-import showcase3a from "/src/img/WWP-BLACK-COLLECTION/wwp-sweater-front.png";
-import showcase3b from "/src/img/WWP-BLACK-COLLECTION/wwp-sweater-back.png";
+import showcase4a from "/src/img/WWP-BLACK-COLLECTION/wwp-hoodie-front.png";
+import showcase4b from "/src/img/WWP-BLACK-COLLECTION/wwp-hoodie-back.png";
+import showcase5a from "/src/img/WWP-BLACK-COLLECTION/wwp-shirt-front.png";
+import showcase5b from "/src/img/WWP-BLACK-COLLECTION/wwp-shirt-back.png";
+import showcase6a from "/src/img/WWP-BLACK-COLLECTION/wwp-sweater-front.png";
+import showcase6b from "/src/img/WWP-BLACK-COLLECTION/wwp-sweater-back.png";
 // --- END: Local Image Imports ---
 
 export {
@@ -25,10 +25,10 @@ export {
   sizechart,
   sizechart1,
   sizechart2,
-  showcase1a,
-  showcase1b,
-  showcase2a,
-  showcase2b,
-  showcase3a,
-  showcase3b,
+  showcase4a,
+  showcase4b,
+  showcase5a,
+  showcase5b,
+  showcase6a,
+  showcase6b,
 };
