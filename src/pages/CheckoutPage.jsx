@@ -120,6 +120,7 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
+  // NOTE: orderTotal still correctly includes the shipping fee for the final charge
   const orderTotal = cartSubtotal + shippingFee;
 
   useEffect(() => {
@@ -161,15 +162,14 @@ const CheckoutPage = () => {
         product_names_summary: productNameSummary,
         customer_email: formData.email,
         contact_number: formData.contactNumber,
+        // total_amount remains correct (subtotal + shipping fee)
         total_amount: orderTotal,
-        // 🚀 CRITICAL: The key must EXACTLY match the database column name.
-        shipping_fee: shippingFee,
+        // ❌ REMOVED: shipping_fee: shippingFee,
         payment_status: "Paid",
         delivery_status: "Pending",
         shipping_address: shippingAddress,
       };
 
-      // 💥 DEBUGGING STEP: Log the object before insertion
       console.log("Data sent to Supabase 'orders':", orderToInsert);
 
       // 3. Insert into public.orders

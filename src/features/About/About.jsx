@@ -4,8 +4,9 @@ import {
   Eye,
   Rocket,
   Zap,
-  Mail, // Mail and MapPin are no longer needed here, but kept in case Footer isn't a separate file
+  Mail, // Mail and MapPin are now needed for the CONTACT section
   MapPin,
+  Contact,
 } from "lucide-react";
 
 const About = () => {
@@ -40,9 +41,7 @@ const About = () => {
               {/* Eye for Vision/Augmented Reality */}
             </div>
             <div>
-              <h2 className={`text-3xl font-bold text-gray-900 mb-3`}>
-                ABOUT US
-              </h2>
+              <h2 className={sectionHeading}>ABOUT US</h2>
               <p className='text-base sm:text-lg leading-relaxed text-black'>
                 <strong className={brandAccentColor}>Wear Apparel</strong> is a
                 socially driven clothing company that combines advocacy,
@@ -104,7 +103,42 @@ const About = () => {
               </p>
             </div>
           </div>
-          {/* Removed CONTACT section entirely */}
+
+          {/* 3. CONTACT - Added back here */}
+          <section className='contact-us pt-8 border-t border-gray-100'>
+            <div className='flex items-center space-x-4 mb-4'>
+              <div className={iconContainerStyle}>
+                <Contact className='w-6 h-6' style={{ color: "#dc2626" }} />{" "}
+                {/* Rocket for Vision/Future */}
+              </div>
+              <h2 className={sectionHeading}>CONTACT</h2>
+            </div>
+
+            <p className='text-base sm:text-lg leading-relaxed text-black mb-4'>
+              Have questions or want to learn more about our advocacy? Get in
+              touch with us:
+            </p>
+
+            <div className='space-y-3'>
+              {/* Email Contact */}
+              <div className='flex items-center space-x-4'>
+                <Mail className='w-6 h-6' style={{ color: "#dc2626" }} />
+                <p className='text-base text-black'>
+                  <strong className='font-semibold'>Email:</strong>{" "}
+                  wearapparelbrand.official@gmail.com
+                </p>
+              </div>
+
+              {/* Address Contact */}
+              <div className='flex items-center space-x-4'>
+                <MapPin className='w-6 h-6' style={{ color: "#dc2626" }} />
+                <p className='text-base text-black'>
+                  <strong className='font-semibold'>Address:</strong> QUEZON
+                  CITY, PHILIPPINES
+                </p>
+              </div>
+            </div>
+          </section>
         </div>{" "}
         {/* End Core Content Grid */}
       </div>{" "}
