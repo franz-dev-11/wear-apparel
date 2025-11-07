@@ -117,6 +117,8 @@ const CheckoutPage = () => {
     cityOrProvince: "",
     zipCode: "",
   });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState("Cash On Delivery");
   const [isProcessing, setIsProcessing] = useState(false);
 
   const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
@@ -156,6 +158,11 @@ const CheckoutPage = () => {
         zipCode: formData.zipCode,
       };
 
+      const paymentStatus =
+        selectedPaymentMethod === "Cash On Delivery"
+          ? "Pending Payment"
+          : "Paid";
+
       const orderToInsert = {
         customer_guest_id: currentGuestId,
         customer_name: formData.fullName,
@@ -165,9 +172,10 @@ const CheckoutPage = () => {
         // total_amount remains correct (subtotal + shipping fee)
         total_amount: orderTotal,
         // ❌ REMOVED: shipping_fee: shippingFee,
-        payment_status: "Paid",
+        payment_status: paymentStatus, // Updated based on selection
         delivery_status: "Pending",
         shipping_address: shippingAddress,
+        payment_method: selectedPaymentMethod, // Added payment method
       };
 
       console.log("Data sent to Supabase 'orders':", orderToInsert);
@@ -255,6 +263,7 @@ const CheckoutPage = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     required
+                    autoComplete='off'
                     className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
@@ -273,6 +282,7 @@ const CheckoutPage = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
+                    autoComplete='off'
                     className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
@@ -291,6 +301,7 @@ const CheckoutPage = () => {
                     value={formData.contactNumber}
                     onChange={handleInputChange}
                     required
+                    autoComplete='off'
                     className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     placeholder='e.g., 09xxxxxxxxx'
                   />
@@ -310,6 +321,7 @@ const CheckoutPage = () => {
                     value={formData.addressLine1}
                     onChange={handleInputChange}
                     required
+                    autoComplete='off'
                     className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                   />
                 </div>
@@ -330,6 +342,7 @@ const CheckoutPage = () => {
                       value={formData.cityOrProvince}
                       onChange={handleInputChange}
                       required
+                      autoComplete='off'
                       className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
@@ -347,6 +360,7 @@ const CheckoutPage = () => {
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
+                      autoComplete='off'
                       className='mt-1 block w-full text-black ring ring-black border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-red-500 focus:border-red-500'
                     />
                   </div>
@@ -356,13 +370,42 @@ const CheckoutPage = () => {
                   <h2 className='text-xl font-bold text-gray-900 mb-4'>
                     Payment Method
                   </h2>
-                  <div className='p-4 border-2 border-dashed border-gray-300 rounded-lg text-center'>
-                    <p className='text-gray-600'>
-                      [Payment Gateway UI Placeholder - e.g., Stripe Elements]
-                    </p>
-                    <p className='text-xs mt-2'>
-                      * Payment is set to "Paid" for demonstration.
-                    </p>
+                  <div className='mt-2 space-y-4'>
+                    {["Maya", "GCash", "Cash On Delivery"].map((method) => (
+                      <div key={method} className='flex items-center'>
+                        <input
+                          id={`payment-method-${method.replace(/ /g, "-")}`}
+                          name='payment-method'
+                          type='radio'
+                          value={method}
+                          checked={selectedPaymentMethod === method}
+                          onChange={(e) =>
+                            setSelectedPaymentMethod(e.target.value)
+                          }
+                          required
+                          className='h-4 w-4 text-red-600 border-gray-300 focus:ring-red-500'
+                        />
+                        <label
+                          htmlFor={`payment-method-${method.replace(
+                            / /g,
+                            "-"
+                          )}`}
+                          className='ml-3 block text-sm font-medium text-gray-700'
+                        >
+                          {method}
+                          {method !== "Cash On Delivery" && (
+                            <span className='ml-2 text-xs text-gray-500'>
+                              (E-Wallet Payment)
+                            </span>
+                          )}
+                          {method === "Cash On Delivery" && (
+                            <span className='ml-2 text-xs text-red-500 font-semibold'>
+                              ({formatCurrency(orderTotal)} due upon delivery)
+                            </span>
+                          )}
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
