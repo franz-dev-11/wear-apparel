@@ -9,29 +9,29 @@ const formatCurrency = (amount) => {
   return amount.toLocaleString("en-PH", { style: "currency", currency: "PHP" });
 };
 
-// 逃 J&T Express Discounted Rate Logic (70% OFF Applied)
-// Rates are 30% of the original prices.
+// 逃 J&T Express Full Rate Logic (Discount Removed)
+// Rates are the standard J&T prices.
 const JNT_RATES = {
   "METRO MANILA": {
-    "0-0.5kg": 25.5, // 85.0 * 0.3
-    "0.5-1kg": 34.5, // 115.0 * 0.3
-    "1-3kg": 46.5, // 155.0 * 0.3
-    "3-4kg": 67.5, // 225.0 * 0.3
-    "4-5kg": 91.5, // 305.0 * 0.3
+    "0-0.5kg": 85.0, // Original Rate
+    "0.5-1kg": 115.0, // Original Rate
+    "1-3kg": 155.0, // Original Rate
+    "3-4kg": 225.0, // Original Rate
+    "4-5kg": 305.0, // Original Rate
   },
   LUZON: {
-    "0-0.5kg": 28.5, // 95.0 * 0.3
-    "0.5-1kg": 49.5, // 165.0 * 0.3
-    "1-3kg": 57.0, // 190.0 * 0.3
-    "3-4kg": 78.0, // 260.0 * 0.3
-    "4-5kg": 105.0, // 350.0 * 0.3
+    "0-0.5kg": 95.0, // Original Rate
+    "0.5-1kg": 165.0, // Original Rate
+    "1-3kg": 190.0, // Original Rate
+    "3-4kg": 260.0, // Original Rate
+    "4-5kg": 350.0, // Original Rate
   },
   "VISAYAS / MINDANAO": {
-    "0-0.5kg": 33.0, // 110.0 * 0.3
-    "0.5-1kg": 60.0, // 200.0 * 0.3
-    "1-3kg": 69.0, // 230.0 * 0.3
-    "3-4kg": 96.0, // 320.0 * 0.3
-    "4-5kg": 135.0, // 450.0 * 0.3
+    "0-0.5kg": 110.0, // Original Rate
+    "0.5-1kg": 200.0, // Original Rate
+    "1-3kg": 230.0, // Original Rate
+    "3-4kg": 320.0, // Original Rate
+    "4-5kg": 450.0, // Original Rate
   },
 };
 
@@ -96,7 +96,7 @@ const getShippingFee = (location, totalWeightKg) => {
   else if (totalWeightKg > 1 && totalWeightKg <= 3) weightTier = "1-3kg";
   else if (totalWeightKg > 3 && totalWeightKg <= 4) weightTier = "3-4kg";
   else if (totalWeightKg > 4 && totalWeightKg <= 5) weightTier = "4-5kg";
-  else if (totalWeightKg > 5) return 135.0;
+  else if (totalWeightKg > 5) return 500.0;
 
   return JNT_RATES[region]?.[weightTier] || 0;
 };
