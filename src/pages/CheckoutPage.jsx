@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../components/CartContext";
-import { v4 as uuidv4 } from "uuid";
-import { supabase, GUEST_ID_KEY } from "../supabaseClient";
+// Removed 'supabase' from import since we now use a serverless function for insertion
+import { GUEST_ID_KEY } from "../supabaseClient";
 
 // Utility function for Philippine Peso formatting
 const formatCurrency = (amount) => {
@@ -122,7 +122,6 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const shippingFee = getShippingFee(formData.cityOrProvince, totalWeightKg);
-  // NOTE: orderTotal still correctly includes the shipping fee for the final charge
   const orderTotal = cartSubtotal + shippingFee;
 
   useEffect(() => {
@@ -135,6 +134,9 @@ const CheckoutPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // --------------------------------------------------------------------------
+  // 💡 REVISED CHECKOUT LOGIC: Send data to Vercel API Route
+  // --------------------------------------------------------------------------
   const handleCheckout = async (e) => {
     e.preventDefault();
 
@@ -147,7 +149,7 @@ const CheckoutPage = () => {
     setIsProcessing(true);
 
     try {
-      // 2. Prepare Data for Orders Table
+      // 1. Prepare Data for Orders Table
       const productNameSummary = cartItems.map((item) => item.name).join(", ");
 
       const shippingAddress = {
@@ -169,55 +171,61 @@ const CheckoutPage = () => {
         product_names_summary: productNameSummary,
         customer_email: formData.email,
         contact_number: formData.contactNumber,
-        // total_amount remains correct (subtotal + shipping fee)
         total_amount: orderTotal,
-        // ✅ FIX: Re-adding shipping_fee because it is a NOT NULL column in the database.
+        // ✅ FIX: Re-adding shipping_fee to satisfy the NOT NULL constraint
         shipping_fee: shippingFee,
-        payment_status: paymentStatus, // Updated based on selection
+        payment_status: paymentStatus,
         delivery_status: "Pending",
         shipping_address: shippingAddress,
-        payment_method: selectedPaymentMethod, // Added payment method
+        payment_method: selectedPaymentMethod,
       };
 
-      console.log("Data sent to Supabase 'orders':", orderToInsert);
-
-      // 3. Insert into public.orders
-      const { data: orderData, error: orderError } = await supabase
-        .from("orders")
-        .insert([orderToInsert])
-        .select()
-        .single();
-
-      if (orderError) throw orderError;
-      const orderId = orderData.id;
-
-      // 4. Prepare and Insert into public.order_items
-      const orderItemsToInsert = cartItems.map((item) => ({
-        order_id: orderId,
+      // 2. Prepare Data for Order Items Table (order_id will be added by the API)
+      const orderItemsData = cartItems.map((item) => ({
         product_id: item.productId,
         product_name: item.name,
         quantity: item.quantity,
         price_at_purchase: item.price,
       }));
 
-      const { error: itemsError } = await supabase
-        .from("order_items")
-        .insert(orderItemsToInsert);
+      console.log("Sending transaction data to secure API route...");
 
-      if (itemsError) throw itemsError;
+      // 3. Call the secure Vercel API Route
+      const apiResponse = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderToInsert,
+          orderItemsData,
+        }),
+      });
 
-      // 5. Finalize
+      const result = await apiResponse.json();
+
+      if (!apiResponse.ok || !result.success) {
+        // If the API call fails or the server reports an error
+        throw new Error(
+          result.message || "Failed to process order on the server."
+        );
+      }
+
+      // 4. Finalize
+      const orderId = result.orderId; // Get the ID from the successful API response
+
       clearCart();
       navigate(`/order-confirmation/${orderId}`);
     } catch (error) {
       console.error("Checkout failed:", error);
       alert(
-        `There was an error processing your order: ${error.message}. Please check console for the Supabase error details.`
+        `There was an error processing your order: ${error.message}. Please check console for details.`
       );
     } finally {
       setIsProcessing(false);
     }
   };
+  // --------------------------------------------------------------------------
 
   if (cartItemCount === 0 || !currentGuestId) {
     return (
