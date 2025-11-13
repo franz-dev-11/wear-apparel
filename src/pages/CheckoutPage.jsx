@@ -171,7 +171,8 @@ const CheckoutPage = () => {
         contact_number: formData.contactNumber,
         // total_amount remains correct (subtotal + shipping fee)
         total_amount: orderTotal,
-        // ❌ REMOVED: shipping_fee: shippingFee,
+        // ✅ FIX: Re-adding shipping_fee because it is a NOT NULL column in the database.
+        shipping_fee: shippingFee,
         payment_status: paymentStatus, // Updated based on selection
         delivery_status: "Pending",
         shipping_address: shippingAddress,
