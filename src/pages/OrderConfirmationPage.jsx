@@ -41,12 +41,15 @@ const OrderConfirmationPage = () => {
             <li>
               You will receive a shipping confirmation email with tracking
               details as soon as you send us the payment reference number (Gcash
-              or Maya) via text for confirmation. Our contact number is +63 912
-              345 6789.
+              or Maya) via text for confirmation. Our contact number is
+              09760109257.
             </li>
-            <li>Gcash: +63 912 345 6789</li>
-            <li>Maya: +63 912 345 6789</li>
-            <li>For any issues, please contact support.</li>
+            <li>Gcash: 09760109257 </li>
+            <li>Maya: 09760109257 </li>
+            <li>
+              For any issues, please contact support at
+              wearapparelbrand.official@gmail.com
+            </li>
           </ul>
         </div>
 
