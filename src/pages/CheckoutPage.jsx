@@ -272,7 +272,7 @@ const CheckoutPage = () => {
                     htmlFor='fullName'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Full Name
+                    Full Name (eg. Juan Dela Cruz)
                   </label>
                   <input
                     type='text'
@@ -291,7 +291,7 @@ const CheckoutPage = () => {
                     htmlFor='email'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Email Address
+                    Email Address (eg. juandelacruz@gmail.com)
                   </label>
                   <input
                     type='email'
@@ -310,7 +310,7 @@ const CheckoutPage = () => {
                     htmlFor='contactNumber'
                     className='block text-sm font-medium text-gray-700'
                   >
-                    Contact Number
+                    Contact Number (eg. 09123456789)
                   </label>
                   <input
                     type='tel'
