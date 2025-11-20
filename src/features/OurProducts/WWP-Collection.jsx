@@ -157,32 +157,32 @@ const ClothesCard = ({
   );
 };
 
-// 💥 CRITICAL: Product Data with Corrected UUIDs
+// 💥 CRITICAL: Product Data with Corrected UUIDs and UPDATED PRICES
 const wwpClothesData = [
   {
     id: "0a1b2c3d-4e5f-4678-90ab-cdef01234567", // WWP Hoodie Black UUID
     name: "WWP Hoodie Black",
+    price: 2250, // PRICE UPDATED FROM 1600
     description:
       "The WWP Hoodie from the Walk With Pride Collection promotes courage and acceptance. It carries the statement “It’s a Virus, Not a Judgment” — a reminder to walk with pride and compassion.",
-    price: 1600,
     frontImage: showcase4a,
     backImage: showcase4b,
   },
   {
     id: "5f4e3d2c-1b0a-4987-6543-210fedcba987", // WWP Shirt Black UUID
     name: "WWP Shirt Black",
+    price: 1050, // PRICE UPDATED FROM 700
     description:
       "The WWP T-Shirt offers a relaxed, breathable fit with the same inspiring design from the Walk With Pride Collection. Empowers wearers to stand up for awareness and equality in everyday style.",
-    price: 700,
     frontImage: showcase5a,
     backImage: showcase5b,
   },
   {
     id: "1c2d3e4f-5a6b-4789-9012-34567890efab", // WWP Sweater Black UUID
     name: "WWP Sweater Black",
+    price: 1850, // PRICE UPDATED FROM 1400
     description:
       "The WWP Sweater, featuring a clean front logo and a powerful back design that reads “Walk With Pride,” this piece blends comfort with advocacy — perfect for making a statement with purpose.",
-    price: 1400,
     frontImage: showcase6a,
     backImage: showcase6b,
   },

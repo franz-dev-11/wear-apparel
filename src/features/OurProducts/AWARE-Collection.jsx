@@ -157,32 +157,32 @@ const ClothesCard = ({
   );
 };
 
-// 💥 CRITICAL: Product Data with Corrected UUIDs
+// 💥 CRITICAL: Product Data with Corrected UUIDs and UPDATED PRICES
 const awareClothesData = [
   {
     id: "5a4b3d2c-1e0f-4a9b-8c7d-6e5f4a3b2c1d", // AWARE Hoodie White UUID
     name: "AWARE Hoodie White",
+    price: 2250, // PRICE UPDATED FROM 1600
     description:
       "The AWARE Hoodie combines comfort and purpose. Crafted in sleek black, it features a minimalist heart and “Be Aware” print — a subtle reminder to stay informed and spread awareness in style.",
-    price: 1600,
     frontImage: showcase1a,
     backImage: showcase1b,
   },
   {
     id: "9b8c7d6e-5f4a-4d3c-2b1a-0f9e8d7c6b5a", // AWARE Shirt White UUID
     name: "AWARE Shirt White",
+    price: 1050, // PRICE UPDATED FROM 700
     description:
       "The AWARE T-Shirt offers a relaxed fit with its vibrant back design promotes compassion and equality, making it the perfect everyday wear for those who choose to stand against stigma.",
-    price: 700,
     frontImage: showcase2a,
     backImage: showcase2b,
   },
   {
     id: "e1f2d3c4-b5a6-4789-9012-34567890abcd", // AWARE Sweater White UUID
     name: "AWARE Sweater White",
+    price: 1850, // PRICE UPDATED FROM 1400
     description:
       "The AWARE Sweater designed with a bold back print that reads “Love is the Vaccine Against the Stigma,” it’s a powerful piece that blends statement and style effortlessly.",
-    price: 1400,
     frontImage: showcase3a,
     backImage: showcase3b,
   },
